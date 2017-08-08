@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.udacity.android.bakingapp.ui.RecipeListFragment"
-    android:id="@+id/container_recipe_list"
-    tools:context="com.udacity.android.bakingapp.ui.MainActivity"/>
+    android:name="com.udacity.android.bakingapp.ui.RecipeDetailFragment"
+    android:id="@+id/container_recipe_detail"
+    tools:context="com.udacity.android.bakingapp.ui.RecipeDetailActivity">
+
+</fragment>
