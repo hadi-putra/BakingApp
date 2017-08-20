@@ -1,24 +1,22 @@
 package com.udacity.android.bakingapp;
 
-import android.app.Application;
-
 import com.udacity.android.bakingapp.dagger.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;
-import dagger.android.support.DaggerApplication;
+import dagger.android.DaggerApplication;
 
 /**
  * Created by hadi on 09/08/17.
  */
 
-public class App extends Application{
+public class App extends DaggerApplication {
 
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    //@Override
+    @Override
     protected AndroidInjector<App> applicationInjector() {
         return DaggerAppComponent.builder().create(this);
     }

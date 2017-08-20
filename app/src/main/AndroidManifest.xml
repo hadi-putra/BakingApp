@@ -10,15 +10,20 @@
         android:supportsRtl="true"
         android:name=".App"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RecipeDetailActivity" />
-        <activity android:name=".ui.RecipeStepDetailActivity"></activity>
+        <activity android:name=".ui.activities.RecipeDetailActivity" />
+        <activity android:name=".ui.activities.RecipeStepDetailActivity"/>
+        
+        <provider
+            android:authorities="com.udacity.android.bakingapp"
+            android:name=".data.BakingProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

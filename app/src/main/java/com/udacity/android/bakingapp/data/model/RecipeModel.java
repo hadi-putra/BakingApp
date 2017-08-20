@@ -1,4 +1,4 @@
-package com.udacity.android.bakingapp.data;
+package com.udacity.android.bakingapp.data.model;
 
 import java.util.List;
 

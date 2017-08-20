@@ -1,8 +1,9 @@
-package com.udacity.android.bakingapp.dagger;
+package com.udacity.android.bakingapp.dagger.module;
 
 import android.content.Context;
 
 import com.udacity.android.bakingapp.App;
+import com.udacity.android.bakingapp.data.BakingApi;
 
 import javax.inject.Singleton;
 
@@ -19,8 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
  */
 @Module
 public class AppModule {
-    private static final String URL =
-            "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
+    private static final String URL = "https://d17h27t6h515a5.cloudfront.net/";
 
     @Singleton
     @Provides
@@ -48,5 +48,11 @@ public class AppModule {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
+    }
+
+    @Singleton
+    @Provides
+    BakingApi provideBakingApi(Retrofit retrofit){
+        return retrofit.create(BakingApi.class);
     }
 }

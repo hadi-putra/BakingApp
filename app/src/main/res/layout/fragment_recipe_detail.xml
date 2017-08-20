@@ -3,5 +3,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/rv_recipe_detail"
-    tools:context="com.udacity.android.bakingapp.ui.RecipeDetailFragment"/>
+    tools:context="com.udacity.android.bakingapp.ui.fragments.RecipeDetailFragment"/>
 

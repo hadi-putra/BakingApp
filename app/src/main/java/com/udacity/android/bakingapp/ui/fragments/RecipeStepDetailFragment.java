@@ -1,4 +1,4 @@
-package com.udacity.android.bakingapp.ui;
+package com.udacity.android.bakingapp.ui.fragments;
 
 
 import android.os.Bundle;

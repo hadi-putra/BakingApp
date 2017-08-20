@@ -1,4 +1,4 @@
-package com.udacity.android.bakingapp.ui;
+package com.udacity.android.bakingapp.ui.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

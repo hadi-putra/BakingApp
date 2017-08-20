@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.udacity.android.bakingapp.ui.RecipeStepDetailFragment"
+    android:name="com.udacity.android.bakingapp.ui.fragments.RecipeStepDetailFragment"
     android:id="@+id/container_recipe_step_detail"
-    tools:context="com.udacity.android.bakingapp.ui.RecipeStepDetailActivity">
+    tools:context="com.udacity.android.bakingapp.ui.activities.RecipeStepDetailActivity">
 
 </fragment>

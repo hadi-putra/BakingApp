@@ -1,19 +1,22 @@
-package com.udacity.android.bakingapp.ui;
+package com.udacity.android.bakingapp.ui.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.udacity.android.bakingapp.R;
+import com.udacity.android.bakingapp.ui.views.RecipeListView;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RecipeListFragment extends Fragment {
+public class RecipeListFragment extends Fragment implements RecipeListView {
 
 
     public RecipeListFragment() {
@@ -28,4 +31,9 @@ public class RecipeListFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        AndroidSupportInjection.inject(this);
+    }
 }

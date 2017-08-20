@@ -1,11 +1,11 @@
-package com.udacity.android.bakingapp.data;
+package com.udacity.android.bakingapp.data.model;
 
 /**
  * Created by msk-1196 on 7/29/17.
  */
 
 public class IngredientModel {
-    private float quatity;
+    private float quantity;
     private String measure;
     private String ingredient;
 

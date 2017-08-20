@@ -9,7 +9,7 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:id="@+id/container_recipe_detail"
-        android:name="com.udacity.android.bakingapp.ui.RecipeDetailFragment"
+        android:name="com.udacity.android.bakingapp.ui.fragments.RecipeDetailFragment"
         tools:layout="@layout/fragment_recipe_detail" />
 
     <FrameLayout

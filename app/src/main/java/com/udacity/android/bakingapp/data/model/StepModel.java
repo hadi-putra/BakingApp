@@ -1,4 +1,4 @@
-package com.udacity.android.bakingapp.data;
+package com.udacity.android.bakingapp.data.model;
 
 /**
  * Created by msk-1196 on 7/29/17.

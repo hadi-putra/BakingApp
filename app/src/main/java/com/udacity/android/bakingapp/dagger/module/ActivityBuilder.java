@@ -1,8 +1,8 @@
-package com.udacity.android.bakingapp.dagger;
+package com.udacity.android.bakingapp.dagger.module;
 
-import com.udacity.android.bakingapp.ui.MainActivity;
-import com.udacity.android.bakingapp.ui.RecipeDetailActivity;
-import com.udacity.android.bakingapp.ui.RecipeStepDetailActivity;
+import com.udacity.android.bakingapp.ui.activities.MainActivity;
+import com.udacity.android.bakingapp.ui.activities.RecipeDetailActivity;
+import com.udacity.android.bakingapp.ui.activities.RecipeStepDetailActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -12,7 +12,7 @@ import dagger.android.ContributesAndroidInjector;
  */
 @Module
 public abstract class ActivityBuilder {
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = RecipeListFragmentProvider.class)
     abstract MainActivity bindMainActivity();
 
     @ContributesAndroidInjector
