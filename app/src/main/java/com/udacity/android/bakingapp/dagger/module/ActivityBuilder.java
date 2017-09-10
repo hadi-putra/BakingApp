@@ -15,9 +15,10 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = RecipeListFragmentProvider.class)
     abstract MainActivity bindMainActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = {RecipeDetailFragmentProvider.class,
+            RecipeStepDetailFragmentProvider.class})
     abstract RecipeDetailActivity bindRecipeDetailActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = RecipeStepDetailFragmentProvider.class)
     abstract RecipeStepDetailActivity bindRecipeStepDetailActivity();
 }

@@ -4,7 +4,7 @@ import com.udacity.android.bakingapp.data.model.RecipeModel;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 /**
@@ -14,5 +14,5 @@ import retrofit2.http.GET;
 public interface BakingApi {
 
     @GET("topher/2017/May/59121517_baking/baking.json")
-    Flowable<List<RecipeModel>> getRecipeList();
+    Observable<List<RecipeModel>> getRecipeList();
 }

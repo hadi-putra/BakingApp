@@ -1,18 +1,43 @@
 package com.udacity.android.bakingapp.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
  * Created by msk-1196 on 7/29/17.
  */
 
-public class RecipeModel {
+public class RecipeModel implements Parcelable {
     private int id;
     private String name;
     private List<IngredientModel> ingredients;
     private List<StepModel> steps;
     private int servings;
     private String image;
+
+    public RecipeModel(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        ingredients = in.createTypedArrayList(IngredientModel.CREATOR);
+        servings = in.readInt();
+        image = in.readString();
+    }
+
+    public RecipeModel(){}
+
+    public static final Creator<RecipeModel> CREATOR = new Creator<RecipeModel>() {
+        @Override
+        public RecipeModel createFromParcel(Parcel in) {
+            return new RecipeModel(in);
+        }
+
+        @Override
+        public RecipeModel[] newArray(int size) {
+            return new RecipeModel[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -60,5 +85,19 @@ public class RecipeModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeTypedList(ingredients);
+        parcel.writeInt(servings);
+        parcel.writeString(image);
     }
 }

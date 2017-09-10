@@ -1,24 +1,25 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context="com.udacity.android.bakingapp.ui.fragments.RecipeStepDetailFragment">
-    <LinearLayout
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/video_player_height"
+        android:id="@+id/video_container"
+        android:layout_margin="@dimen/default_margin"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="@dimen/default_margin"
+        android:fontFamily="sans-serif"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:id="@+id/step_description"
+        tools:text="lorem ipsum sir dolor amet"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/video_container"/>
+</LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:id="@+id/description"
-            tools:text="lorem ipsum sir dolor amet"/>
-
-    </LinearLayout>
-</ScrollView>

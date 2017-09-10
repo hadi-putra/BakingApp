@@ -40,13 +40,14 @@ public class BakingDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_TABLE_STEP =
                 "CREATE TABLE IF NOT EXISTS "+ StepContract.StepEntry.TABLE_NAME +" ("+
-                        StepContract.StepEntry._ID                         +" INTEGER PRIMARY KEY, "+
+                        StepContract.StepEntry._ID                         +" INTEGER NOT NULL, "+
                         StepContract.StepEntry.COLUMN_DESCRIPTION          +" TEXT, "+
                         StepContract.StepEntry.COLUMN_SHORT_DESCRIPTION    +" TEXT, "+
                         StepContract.StepEntry.COLUMN_THUMBNAIL_URL        +" TEXT, "+
                         StepContract.StepEntry.COLUMN_VIDEO_URL            +" TEXT, "+
                         StepContract.StepEntry.COLUMN_RECIPE_ID            +" INTEGER NOT NULL, "+
-                        "UNIQUE ("+ StepContract.StepEntry._ID+") ON CONFLICT REPLACE)";
+                        "UNIQUE ("+ StepContract.StepEntry._ID+", "+ StepContract.StepEntry.COLUMN_RECIPE_ID
+                        +") ON CONFLICT REPLACE)";
 
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_RECIPE);
         sqLiteDatabase.execSQL(SQL_CREATE_TABLE_INGREDIENT);
