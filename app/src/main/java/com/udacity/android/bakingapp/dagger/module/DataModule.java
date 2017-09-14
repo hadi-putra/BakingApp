@@ -2,12 +2,14 @@ package com.udacity.android.bakingapp.dagger.module;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.squareup.sqlbrite2.BriteContentResolver;
 import com.squareup.sqlbrite2.SqlBrite;
+import com.udacity.android.bakingapp.App;
 import com.udacity.android.bakingapp.data.BakingApi;
 import com.udacity.android.bakingapp.data.BakingDbHelper;
-import com.udacity.android.bakingapp.data.RecipeRepositoty;
+import com.udacity.android.bakingapp.data.RecipeRepository;
 
 import javax.inject.Singleton;
 
@@ -47,8 +49,14 @@ public class DataModule {
 
     @Singleton
     @Provides
-    RecipeRepositoty provideRecipeRepository(BakingApi bakingApi, BriteContentResolver briteContentResolver,
-                                             ContentResolver contentResolver){
-        return new RecipeRepositoty(bakingApi, briteContentResolver, contentResolver);
+    RecipeRepository provideRecipeRepository(BakingApi bakingApi, BriteContentResolver briteContentResolver,
+                                             ContentResolver contentResolver, SharedPreferences preferences){
+        return new RecipeRepository(bakingApi, briteContentResolver, contentResolver, preferences);
+    }
+
+    @Singleton
+    @Provides
+    SharedPreferences provideSharedPreferences(App app){
+        return app.getSharedPreferences(RecipeRepository.PREF_NAME, Context.MODE_PRIVATE);
     }
 }

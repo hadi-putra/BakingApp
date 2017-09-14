@@ -1,6 +1,7 @@
 package com.udacity.android.bakingapp.presenter;
 
-import com.udacity.android.bakingapp.data.RecipeRepositoty;
+import com.udacity.android.bakingapp.data.RecipeRepository;
+import com.udacity.android.bakingapp.data.model.RecipeModel;
 import com.udacity.android.bakingapp.ui.views.RecipeDetailView;
 
 import javax.inject.Inject;
@@ -14,32 +15,49 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class RecipeDetailPresenter {
     private RecipeDetailView view;
-    private int recipeId;
-    private RecipeRepositoty mRepository;
+    private RecipeModel recipe;
+    private RecipeRepository mRepository;
     private final CompositeDisposable compositeDisposable;
 
     @Inject
-    public RecipeDetailPresenter(RecipeDetailView view, RecipeRepositoty repository) {
+    public RecipeDetailPresenter(RecipeDetailView view, RecipeRepository repository) {
         this.view = view;
         this.mRepository = repository;
         compositeDisposable = new CompositeDisposable();
     }
 
-    public void setRecipeId(int recipeId) {
-        this.recipeId = recipeId;
+    public void setRecipe(RecipeModel recipe) {
+        this.recipe = recipe;
     }
 
     public void getIngredients() {
-        compositeDisposable.add(mRepository.getIngredients(recipeId)
+        compositeDisposable.add(mRepository.getIngredients(recipe.getId())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ingredientModels -> view.setIngredient(ingredientModels),
-                        throwable -> throwable.printStackTrace()));
+                .subscribe(ingredientModels -> {
+                    recipe.setIngredients(ingredientModels);
+                    view.setIngredient(ingredientModels);
+                }, throwable -> throwable.printStackTrace()));
     }
 
     public void getSteps() {
-        compositeDisposable.add(mRepository.getSteps(recipeId)
+        compositeDisposable.add(mRepository.getSteps(recipe.getId())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stepModels -> view.setStep(stepModels),
+                .subscribe(stepModels -> {
+                            recipe.setSteps(stepModels);
+                            view.setStep(stepModels);
+                        },
                         throwable -> throwable.printStackTrace()));
+    }
+
+    public void disposeSubscription() {
+        compositeDisposable.dispose();
+    }
+
+    public void setTitle() {
+        view.setRecipeTitle(recipe.getName());
+    }
+
+    public void addRecipeToWidget() {
+        view.addToWidget(recipe);
     }
 }

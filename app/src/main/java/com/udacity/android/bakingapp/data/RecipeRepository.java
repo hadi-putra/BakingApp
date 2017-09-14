@@ -3,8 +3,8 @@ package com.udacity.android.bakingapp.data;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.util.Log;
 
 import com.squareup.sqlbrite2.BriteContentResolver;
 import com.squareup.sqlbrite2.SqlBrite;
@@ -16,12 +16,11 @@ import com.udacity.android.bakingapp.data.model.RecipeModel;
 import com.udacity.android.bakingapp.data.model.StepModel;
 import com.udacity.android.bakingapp.util.BakingUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -29,10 +28,14 @@ import io.reactivex.schedulers.Schedulers;
  * Created by hadi on 10/09/17.
  */
 
-public class RecipeRepositoty {
+public class RecipeRepository {
+    public static final String PREF_NAME = "RecipeWidget";
+    public static final String PREF_KEY = "RecipeInfo";
+
     private final BakingApi bakingApi;
     private final ContentResolver contentResolver;
     private final BriteContentResolver briteContentResolver;
+    private final SharedPreferences mPreference;
 
     public static final String[] RECIPE_PROJECTION = new String[] {
             RecipeContract.RecipeEntry._ID,
@@ -71,11 +74,12 @@ public class RecipeRepositoty {
     public static final int INDEX_STEP_VID_URL = 4;
 
 
-    public RecipeRepositoty(BakingApi bakingApi, BriteContentResolver briteContentResolver,
-                            ContentResolver contentResolver) {
+    public RecipeRepository(BakingApi bakingApi, BriteContentResolver briteContentResolver,
+                            ContentResolver contentResolver, SharedPreferences preferences) {
         this.bakingApi = bakingApi;
         this.briteContentResolver = briteContentResolver;
         this.contentResolver = contentResolver;
+        this.mPreference = preferences;
     }
 
     public Observable<List<RecipeModel>> getRecipeRemote() {
@@ -186,4 +190,14 @@ public class RecipeRepositoty {
 
         return steps;
     };
+
+    public void addRecipeToWidget(RecipeModel recipeModel) {
+        SharedPreferences.Editor editor = mPreference.edit();
+        editor.putString(PREF_KEY, BakingUtil.recipeToJson(recipeModel));
+        editor.apply();
+    }
+
+    public RecipeModel getRecipeForWidget() throws IOException {
+        return BakingUtil.recipeFromJson(mPreference.getString(PREF_KEY, null));
+    }
 }

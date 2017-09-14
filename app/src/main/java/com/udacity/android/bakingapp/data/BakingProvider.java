@@ -188,8 +188,10 @@ public class BakingProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues, @Nullable String s,
-                      @Nullable String[] strings) {
+    public int update(@NonNull Uri uri, @Nullable ContentValues contentValues,
+                      @Nullable String selection,
+                      @Nullable String[] selectionArgs) {
+
         return 0;
     }
 

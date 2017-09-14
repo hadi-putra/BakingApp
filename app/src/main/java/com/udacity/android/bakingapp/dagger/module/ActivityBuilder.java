@@ -1,5 +1,6 @@
 package com.udacity.android.bakingapp.dagger.module;
 
+import com.udacity.android.bakingapp.services.UpdateWidgetService;
 import com.udacity.android.bakingapp.ui.activities.MainActivity;
 import com.udacity.android.bakingapp.ui.activities.RecipeDetailActivity;
 import com.udacity.android.bakingapp.ui.activities.RecipeStepDetailActivity;
@@ -21,4 +22,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = RecipeStepDetailFragmentProvider.class)
     abstract RecipeStepDetailActivity bindRecipeStepDetailActivity();
+
+    @ContributesAndroidInjector
+    abstract UpdateWidgetService bindUpdateWidgetService();
 }

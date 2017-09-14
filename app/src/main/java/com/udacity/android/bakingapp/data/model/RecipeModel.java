@@ -21,6 +21,7 @@ public class RecipeModel implements Parcelable {
         id = in.readInt();
         name = in.readString();
         ingredients = in.createTypedArrayList(IngredientModel.CREATOR);
+        steps = in.createTypedArrayList(StepModel.CREATOR);
         servings = in.readInt();
         image = in.readString();
     }
@@ -97,6 +98,7 @@ public class RecipeModel implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(name);
         parcel.writeTypedList(ingredients);
+        parcel.writeTypedList(steps);
         parcel.writeInt(servings);
         parcel.writeString(image);
     }

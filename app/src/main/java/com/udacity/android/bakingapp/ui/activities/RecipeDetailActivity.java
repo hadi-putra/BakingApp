@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.StepModel;
@@ -38,17 +39,22 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
 
         isTwoPane = findViewById(R.id.container_recipe_step_detail) != null;
 
-        int recipeId = getIntent().getIntExtra(RecipeListFragment.RECIPE_ID_KEY, -1);
-        if (recipeId == -1)
-            throw new IllegalArgumentException(getString(R.string.recipe_id_invalid));
+
+        if (!getIntent().hasExtra(RecipeListFragment.RECIPE_KEY))
+            throw new IllegalArgumentException(getString(R.string.recipe_invalid));
+
 
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(FRAGMENT_DETAIL_TAG);
         if (fragment == null) {
-            fragment = RecipeDetailFragment.newInstance(recipeId);
+            fragment = RecipeDetailFragment.newInstance(getIntent()
+                    .getParcelableExtra(RecipeListFragment.RECIPE_KEY));
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container_recipe_detail, fragment, FRAGMENT_DETAIL_TAG)
                     .commit();
         }
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -71,5 +77,14 @@ public class RecipeDetailActivity extends AppCompatActivity implements HasSuppor
                         .commit();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

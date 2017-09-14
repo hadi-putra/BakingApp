@@ -27,6 +27,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -35,7 +36,7 @@ import dagger.android.support.AndroidSupportInjection;
 public class RecipeListFragment extends Fragment implements RecipeListView, RecipeItemAdapter.OnItemClickListener {
     private static final String GRID_STATE_KEY = "com.udacity.android.bakingapp.grid_state";
     private static final String FIRST_TIME_KEY = "com.udacity.android.bakingapp.first_time";
-    public static final String RECIPE_ID_KEY = "com.udacity.android.bakingapp.recipe_id";
+    public static final String RECIPE_KEY = "com.udacity.android.bakingapp.recipe";
 
     @BindView(R.id.rv_recipes) RecyclerView mGridRecipe;
     private RecipeItemAdapter mRecipeItemAdapter;
@@ -43,7 +44,7 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
     private GridLayoutManager mGridLayoutManager;
     private Parcelable mStateGrid;
     private boolean isAlreadyDownloaded;
-
+    private Unbinder unbinder;
 
     public RecipeListFragment() {
         // Required empty public constructor
@@ -60,7 +61,7 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         mGridLayoutManager = new GridLayoutManager(getActivity(), getResources()
                 .getInteger(R.integer.grid_col),
@@ -101,6 +102,13 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
     }
 
     @Override
+    public void onDestroyView() {
+        mPresenter.disposeSubscription();
+        unbinder.unbind();
+        super.onDestroyView();
+    }
+
+    @Override
     public void setRecipes(List<RecipeModel> recipeModels) {
         mRecipeItemAdapter.setRecipes(recipeModels);
         if (mStateGrid != null){
@@ -119,7 +127,7 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
     @Override
     public void onItemClick(RecipeModel recipe) {
         Intent intent = new Intent(getContext(), RecipeDetailActivity.class);
-        intent.putExtra(RECIPE_ID_KEY, recipe.getId());
+        intent.putExtra(RECIPE_KEY, recipe);
 
         startActivity(intent);
     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.IngredientModel;
 import com.udacity.android.bakingapp.data.model.StepModel;
+import com.udacity.android.bakingapp.util.BakingUtil;
 
 import java.util.List;
 
@@ -89,15 +90,8 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
         }
 
         public void bind(List<IngredientModel> ingredients) {
-            String text = "INGREDIENTS\n";
-
-            for (IngredientModel ingredient : ingredients){
-                text+= String.format(itemView.getContext()
-                        .getString(R.string.ingredient_template), ingredient.getQuantity(),
-                        ingredient.getMeasure(), ingredient.getIngredient());
-            }
-
-            mTVIngredients.setText(text);
+            mTVIngredients.setText(BakingUtil
+                    .getFormatedIngredients(itemView.getContext(), ingredients));
         }
     }
 
