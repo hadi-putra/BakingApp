@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="serving_format">
+        <item quantity="zero">%1$d serving</item>
+        <item quantity="one">%1$d serving</item>
+        <item quantity="other">%1$d servings</item>
+    </plurals>
+</resources>

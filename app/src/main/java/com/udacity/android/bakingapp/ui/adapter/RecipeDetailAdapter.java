@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.IngredientModel;
 import com.udacity.android.bakingapp.data.model.StepModel;
@@ -96,9 +97,6 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
     }
 
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.step_image_placeholder)
-        ImageView mStepPlaceHolder;
-
         @BindView(R.id.step_title) TextView mTVStepDescr;
 
         public StepViewHolder(View itemView) {

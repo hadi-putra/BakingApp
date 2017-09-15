@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.udacity.android.bakingapp.data.contract.BaseContract;
 import com.udacity.android.bakingapp.data.contract.IngredientContract;
@@ -62,7 +61,7 @@ public class BakingProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selections,
                         @Nullable String[] selectionArguments, @Nullable String sortOrder) {
-        Log.e(getClass().getSimpleName(), uri.toString());
+
         Cursor cursor;
         SQLiteDatabase sqLiteDatabase = bakingDbHelper.getReadableDatabase();
 
@@ -119,7 +118,6 @@ public class BakingProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
-        Log.e(getClass().getSimpleName(), cursor.getCount()+"");
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }

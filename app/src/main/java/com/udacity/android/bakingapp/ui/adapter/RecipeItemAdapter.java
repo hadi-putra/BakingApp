@@ -54,9 +54,6 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
     }
 
     class RecipeItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @BindView(R.id.recipe_image_placeholder)
-        ImageView mImagePlaceholder;
-
         @BindView(R.id.recipe_title)
         TextView mTVRecipeTitle;
 
@@ -72,7 +69,8 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
         public void bind(RecipeModel recipe) {
             mTVRecipeTitle.setText(recipe.getName());
             String serving = String.format(itemView.getContext()
-                    .getString(R.string.serving_template), recipe.getServings());
+                    .getResources().getQuantityString(R.plurals.serving_format, recipe.getServings())
+                    , recipe.getServings());
             mTVRecipeServing.setText(serving);
         }
 
