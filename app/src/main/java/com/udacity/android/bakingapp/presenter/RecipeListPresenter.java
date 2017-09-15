@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.udacity.android.bakingapp.data.RecipeRepository;
 import com.udacity.android.bakingapp.ui.views.RecipeListView;
+import com.udacity.android.bakingapp.util.SimpleIdlingResource;
 
 import javax.inject.Inject;
 
@@ -40,10 +41,18 @@ public class RecipeListPresenter {
     }
 
 
-    public void getRemoteRecipe() {
+    public void getRemoteRecipe(SimpleIdlingResource idlingResource) {
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
         compositeDisposable.add(recipeRepository.getRecipeRemote()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(recipeModels -> view.finishFirstTime(),
+                .subscribe(recipeModels -> {
+                            view.finishFirstTime();
+                            if (idlingResource != null) {
+                                idlingResource.setIdleState(true);
+                            }
+                        },
                         throwable -> throwable.printStackTrace()));
     }
 

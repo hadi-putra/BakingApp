@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +18,12 @@ import android.view.ViewGroup;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.RecipeModel;
 import com.udacity.android.bakingapp.presenter.RecipeListPresenter;
+import com.udacity.android.bakingapp.ui.activities.MainActivity;
 import com.udacity.android.bakingapp.ui.activities.RecipeDetailActivity;
 import com.udacity.android.bakingapp.ui.adapter.RecipeItemAdapter;
 import com.udacity.android.bakingapp.ui.views.RecipeListView;
+import com.udacity.android.bakingapp.util.SimpleIdlingResource;
+
 
 import java.util.List;
 
@@ -55,6 +59,7 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         return inflater.inflate(R.layout.fragment_recipe_list, container, false);
     }
 
@@ -79,12 +84,16 @@ public class RecipeListFragment extends Fragment implements RecipeListView, Reci
         if (savedInstanceState != null){
             mStateGrid = savedInstanceState.getParcelable(GRID_STATE_KEY);
         }
+
         mPresenter.loadRecipe();
 
         isAlreadyDownloaded = getActivity().getPreferences(Context.MODE_PRIVATE)
                 .getBoolean(FIRST_TIME_KEY, false);
-        if (!isAlreadyDownloaded)
-            mPresenter.getRemoteRecipe();
+        if (!isAlreadyDownloaded) {
+            SimpleIdlingResource idlingResource = (
+                    SimpleIdlingResource)((MainActivity)getActivity()).getIdlingResource();
+            mPresenter.getRemoteRecipe(idlingResource);
+        }
     }
 
     @Override

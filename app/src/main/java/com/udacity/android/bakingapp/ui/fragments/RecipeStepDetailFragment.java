@@ -37,6 +37,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.AndroidSupportInjection;
 
 /**
@@ -44,10 +45,21 @@ import dagger.android.support.AndroidSupportInjection;
  */
 public class RecipeStepDetailFragment extends Fragment implements RecipeStepDetailView {
     public static final String STEP_ARGS = "com.udacity.android.bakingapp.step_args";
+    public static final String IS_READY_PLAYED_KEY = "com.udacity.android.bakingapp.is_ready_played";
+    public static final String CURRENT_WINDOW_INDEX_KEY =
+            "com.udacity.android.bakingapp.current_window_index";
+    public static final String CURRENT_POSITION_KEY =
+            "com.udacity.android.bakingapp.current_position_key";
 
     @Inject RecipeStepDetailPresenter mPresenter;
     @BindView(R.id.video_container) SimpleExoPlayerView mExoPlayerView;
     @BindView(R.id.step_description) TextView mTVStepDescrion;
+
+    private boolean isReadyPlayed = true;
+    private int currentWindowIndex;
+    private long currentPosition;
+
+    private Unbinder unbinder;
 
     private SimpleExoPlayer mExoPlayer;
 
@@ -73,7 +85,13 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
+
+        if (savedInstanceState != null){
+            isReadyPlayed = savedInstanceState.getBoolean(IS_READY_PLAYED_KEY, false);
+            currentWindowIndex = savedInstanceState.getInt(CURRENT_WINDOW_INDEX_KEY, 0);
+            currentPosition = savedInstanceState.getLong(CURRENT_POSITION_KEY, 0);
+        }
 
         Bundle args = getArguments();
         if (args.containsKey(STEP_ARGS)){
@@ -83,9 +101,41 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         AndroidSupportInjection.inject(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        releaseExoPlayer();
+        unbinder.unbind();
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onStop() {
+        releaseExoPlayer();
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releaseExoPlayer();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_WINDOW_INDEX_KEY, currentWindowIndex);
+        outState.putLong(CURRENT_POSITION_KEY, currentPosition);
+        outState.putBoolean(IS_READY_PLAYED_KEY, isReadyPlayed);
     }
 
     @Override
@@ -119,7 +169,8 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
         MediaSource mediaSource = new ExtractorMediaSource(videoUri, dataSourceFactory,
                 extractorsFactory, null, null);
         mExoPlayer.prepare(mediaSource);
-        mExoPlayer.setPlayWhenReady(true);
+        mExoPlayer.setPlayWhenReady(isReadyPlayed);
+        mExoPlayer.seekTo(currentWindowIndex, currentPosition);
     }
 
     @Override
@@ -130,6 +181,9 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
 
     private void releaseExoPlayer() {
         if (mExoPlayer != null){
+            isReadyPlayed = mExoPlayer.getPlayWhenReady();
+            currentPosition = mExoPlayer.getCurrentPosition();
+            currentWindowIndex = mExoPlayer.getCurrentWindowIndex();
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;

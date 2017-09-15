@@ -3,6 +3,7 @@ package com.udacity.android.bakingapp.ui.activities;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.StepModel;
@@ -38,6 +39,18 @@ public class RecipeStepDetailActivity extends AppCompatActivity implements HasSu
                     .replace(R.id.container_recipe_step_detail, fragment, FRAGMENT_STEP_DETAIL_TAG)
                     .commit();
         }
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
