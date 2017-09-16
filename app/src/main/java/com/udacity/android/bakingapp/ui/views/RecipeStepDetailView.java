@@ -8,4 +8,5 @@ import com.udacity.android.bakingapp.data.model.StepModel;
 
 public interface RecipeStepDetailView {
     void initData(StepModel step);
+    void initPlayer(StepModel mStep);
 }

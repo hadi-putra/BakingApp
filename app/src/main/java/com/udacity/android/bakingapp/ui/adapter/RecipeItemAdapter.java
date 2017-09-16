@@ -1,12 +1,14 @@
 package com.udacity.android.bakingapp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.RecipeModel;
 
@@ -54,6 +56,9 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
     }
 
     class RecipeItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.recipe_placeholder)
+        ImageView mIVRecipePlaceholder;
+
         @BindView(R.id.recipe_title)
         TextView mTVRecipeTitle;
 
@@ -72,6 +77,12 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
                     .getResources().getQuantityString(R.plurals.serving_format, recipe.getServings())
                     , recipe.getServings());
             mTVRecipeServing.setText(serving);
+            if (!TextUtils.isEmpty(recipe.getImage())){
+                Picasso.with(itemView.getContext())
+                        .load(recipe.getImage())
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(mIVRecipePlaceholder);
+            }
         }
 
         @Override

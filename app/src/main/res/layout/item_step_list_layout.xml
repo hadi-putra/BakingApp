@@ -4,8 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/recipe_item_height"
     android:layout_margin="@dimen/default_margin"
-    android:background="?attr/colorPrimaryDark"
     android:foreground="?android:attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/step_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/step_title"
@@ -17,6 +23,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:ellipsize="end"
+        android:background="@color/colorTransparentDark"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="@string/dummy_recipe_title" />
 

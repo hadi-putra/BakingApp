@@ -1,6 +1,7 @@
 package com.udacity.android.bakingapp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -97,6 +98,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
     }
 
     class StepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        @BindView(R.id.step_placeholder) ImageView mIVPlaceholder;
         @BindView(R.id.step_title) TextView mTVStepDescr;
 
         public StepViewHolder(View itemView) {
@@ -107,6 +109,12 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
 
         public void bind(StepModel step) {
             mTVStepDescr.setText(step.getShortDescription());
+            if (!TextUtils.isEmpty(step.getThumbnailURL())){
+                Picasso.with(itemView.getContext())
+                        .load(step.getThumbnailURL())
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(mIVPlaceholder);
+            }
         }
 
         @Override

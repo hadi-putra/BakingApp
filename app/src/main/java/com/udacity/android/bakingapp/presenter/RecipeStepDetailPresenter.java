@@ -28,4 +28,8 @@ public class RecipeStepDetailPresenter {
     public void initData() {
         view.initData(mStep);
     }
+
+    public void initPlayer() {
+        view.initPlayer(mStep);
+    }
 }

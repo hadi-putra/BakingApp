@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="recipe_item_height">96dp</dimen>
+    <dimen name="recipe_item_height">150dp</dimen>
     <dimen name="step_item_height">150dp</dimen>
     <dimen name="default_padding">8dp</dimen>
     <dimen name="card_default_radius">4dp</dimen>

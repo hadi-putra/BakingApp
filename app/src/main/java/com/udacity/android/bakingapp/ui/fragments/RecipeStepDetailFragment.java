@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.StepModel;
 import com.udacity.android.bakingapp.presenter.RecipeStepDetailPresenter;
@@ -76,6 +78,14 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null && getArguments().containsKey(STEP_ARGS)){
+            mPresenter.setStep(getArguments().getParcelable(STEP_ARGS));
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -92,12 +102,7 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
             currentWindowIndex = savedInstanceState.getInt(CURRENT_WINDOW_INDEX_KEY, 0);
             currentPosition = savedInstanceState.getLong(CURRENT_POSITION_KEY, 0);
         }
-
-        Bundle args = getArguments();
-        if (args.containsKey(STEP_ARGS)){
-            mPresenter.setStep(args.getParcelable(STEP_ARGS));
-            mPresenter.initData();
-        }
+        mPresenter.initData();
     }
 
     @Override
@@ -112,6 +117,21 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23){
+            mPresenter.initPlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23 || mExoPlayer == null)
+            mPresenter.initPlayer();
+    }
+
+    @Override
     public void onDestroyView() {
         releaseExoPlayer();
         unbinder.unbind();
@@ -120,14 +140,16 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
 
     @Override
     public void onStop() {
-        releaseExoPlayer();
         super.onStop();
+        if (Util.SDK_INT > 23)
+            releaseExoPlayer();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        releaseExoPlayer();
+        if (Util.SDK_INT <= 23)
+            releaseExoPlayer();
     }
 
     @Override
@@ -142,12 +164,19 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     public void initData(StepModel step) {
         mTVStepDescrion.setText(step.getDescription());
         String videoUrl = step.getValidVideoUrl();
-        if (videoUrl == null || videoUrl.isEmpty())
+        if (TextUtils.isEmpty(videoUrl))
             mExoPlayerView.setVisibility(View.GONE);
         else {
             mExoPlayerView.setVisibility(View.VISIBLE);
-            initVideo(videoUrl);
         }
+    }
+
+    @Override
+    public void initPlayer(StepModel step) {
+        if (step == null) return;
+        String videoUrl = step.getValidVideoUrl();
+        if (TextUtils.isEmpty(videoUrl)) return;
+        initVideo(videoUrl);
     }
 
     private void initVideo(String videoUrl) {
@@ -159,6 +188,8 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
 
         mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
         mExoPlayerView.setPlayer(mExoPlayer);
+        mExoPlayer.setPlayWhenReady(isReadyPlayed);
+        mExoPlayer.seekTo(currentWindowIndex, currentPosition);
 
         Uri videoUri = Uri.parse(videoUrl);
 
@@ -169,8 +200,6 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
         MediaSource mediaSource = new ExtractorMediaSource(videoUri, dataSourceFactory,
                 extractorsFactory, null, null);
         mExoPlayer.prepare(mediaSource);
-        mExoPlayer.setPlayWhenReady(isReadyPlayed);
-        mExoPlayer.seekTo(currentWindowIndex, currentPosition);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.udacity.android.bakingapp;
 import android.content.Intent;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -42,7 +43,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void componentTest(){
+    public void componentMainTest(){
         onView(withId(R.id.container_recipe_list)).check(matches(isDisplayed()));
     }
 
@@ -55,14 +56,26 @@ public class MainActivityTest {
         onView(withText("Yellow Cake")).check(matches(isDisplayed()));
         onView(withId(R.id.container_recipe_list)).perform(RecyclerViewActions.scrollToPosition(3));
         onView(withText("Cheesecake")).check(matches(isDisplayed()));
+        onView(withId(R.id.container_recipe_list)).check(RecyclerViewAssertions.hasItemsCount(4));
     }
 
     @Test
-    public void checkItemClick(){
+    public void checkBrowniesClick(){
         onView(withId(R.id.container_recipe_list))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
         onView(withId(R.id.container_recipe_detail)).check(matches(isDisplayed()));
         onView(withId(R.id.rv_recipe_detail)).check(matches(isDisplayed()));
+
+        //check the step 0
+        onView(withId(R.id.rv_recipe_detail)).perform(RecyclerViewActions.scrollToPosition(1));
+        onView(withText("Recipe Introduction")).check(matches(isDisplayed()));
+
+        //click the step 0
+        onView(withId(R.id.rv_recipe_detail))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
+
+        onView(withId(R.id.container_recipe_step_detail)).check(matches(isDisplayed()));
+        onView(withId(R.id.step_description)).check(matches(isDisplayed()));
     }
 
     @After
@@ -71,5 +84,4 @@ public class MainActivityTest {
             Espresso.unregisterIdlingResources(mIdlingResource);
         }
     }
-
 }
