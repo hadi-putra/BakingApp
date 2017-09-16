@@ -99,7 +99,7 @@ public class StepModel implements Parcelable {
         return validVideoUrl;
     }
 
-    private boolean hasMp4Extension() {
+    public boolean hasMp4Extension() {
         return thumbnailURL.substring(thumbnailURL.lastIndexOf(".")+1).equalsIgnoreCase("mp4");
     }
 }

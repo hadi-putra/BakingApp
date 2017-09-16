@@ -1,5 +1,6 @@
 package com.udacity.android.bakingapp.ui.adapter;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.IngredientModel;
 import com.udacity.android.bakingapp.data.model.StepModel;
+import com.udacity.android.bakingapp.glide.GlideApp;
+import com.udacity.android.bakingapp.glide.ThumbnailUrl;
 import com.udacity.android.bakingapp.util.BakingUtil;
 
 import java.util.List;
@@ -109,11 +111,21 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
 
         public void bind(StepModel step) {
             mTVStepDescr.setText(step.getShortDescription());
-            if (!TextUtils.isEmpty(step.getThumbnailURL())){
-                Picasso.with(itemView.getContext())
+            String validVideoUrl = step.getValidVideoUrl();
+            Log.e(getClass().getSimpleName(), getAdapterPosition()+" "+step.getShortDescription());
+            if (!TextUtils.isEmpty(step.getThumbnailURL())
+                    && !step.hasMp4Extension()){
+                GlideApp.with(itemView.getContext())
                         .load(step.getThumbnailURL())
                         .placeholder(R.mipmap.ic_launcher)
                         .into(mIVPlaceholder);
+            } else if (!TextUtils.isEmpty(validVideoUrl)){
+                GlideApp.with(itemView.getContext())
+                        .load(new ThumbnailUrl(validVideoUrl))
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(mIVPlaceholder);
+            } else {
+                mIVPlaceholder.setImageResource(R.mipmap.ic_launcher);
             }
         }
 

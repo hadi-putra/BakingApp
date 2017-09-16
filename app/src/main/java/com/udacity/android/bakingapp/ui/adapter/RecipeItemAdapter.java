@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
 import com.udacity.android.bakingapp.R;
 import com.udacity.android.bakingapp.data.model.RecipeModel;
+import com.udacity.android.bakingapp.glide.GlideApp;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
                     , recipe.getServings());
             mTVRecipeServing.setText(serving);
             if (!TextUtils.isEmpty(recipe.getImage())){
-                Picasso.with(itemView.getContext())
+                GlideApp.with(itemView.getContext())
                         .load(recipe.getImage())
                         .placeholder(R.mipmap.ic_launcher)
                         .into(mIVRecipePlaceholder);
