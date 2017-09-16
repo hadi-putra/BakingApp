@@ -28,7 +28,7 @@ public class ThumbnailFetcher implements DataFetcher<InputStream> {
 
     @Override
     public void loadData(Priority priority, DataCallback<? super InputStream> callback) {
-        
+
         Bitmap bitmap = null;
         MediaMetadataRetriever retriever = null;
         try {
