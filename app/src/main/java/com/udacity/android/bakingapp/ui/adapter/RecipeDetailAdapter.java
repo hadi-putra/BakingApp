@@ -117,15 +117,15 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
                     && !step.hasMp4Extension()){
                 GlideApp.with(itemView.getContext())
                         .load(step.getThumbnailURL())
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.placeholder)
                         .into(mIVPlaceholder);
             } else if (!TextUtils.isEmpty(validVideoUrl)){
                 GlideApp.with(itemView.getContext())
                         .load(new ThumbnailUrl(validVideoUrl))
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.placeholder)
                         .into(mIVPlaceholder);
             } else {
-                mIVPlaceholder.setImageResource(R.mipmap.ic_launcher);
+                mIVPlaceholder.setImageResource(R.drawable.placeholder);
             }
         }
 

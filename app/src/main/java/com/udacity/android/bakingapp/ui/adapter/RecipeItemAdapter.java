@@ -80,8 +80,10 @@ public class RecipeItemAdapter extends RecyclerView.Adapter<RecipeItemAdapter.Re
             if (!TextUtils.isEmpty(recipe.getImage())){
                 GlideApp.with(itemView.getContext())
                         .load(recipe.getImage())
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.placeholder)
                         .into(mIVRecipePlaceholder);
+            } else {
+                mIVRecipePlaceholder.setImageResource(R.drawable.placeholder);
             }
         }
 
