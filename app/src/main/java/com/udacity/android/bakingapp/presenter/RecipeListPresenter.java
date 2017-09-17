@@ -1,7 +1,5 @@
 package com.udacity.android.bakingapp.presenter;
 
-import android.util.Log;
-
 import com.udacity.android.bakingapp.data.RecipeRepository;
 import com.udacity.android.bakingapp.ui.views.RecipeListView;
 import com.udacity.android.bakingapp.util.SimpleIdlingResource;
@@ -33,7 +31,6 @@ public class RecipeListPresenter {
         compositeDisposable.add(recipeRepository.getRecipeLocal()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(recipeModels -> {
-                    Log.e(getClass().getSimpleName(), recipeModels.size()+"");
                     view.setRecipes(recipeModels);
                 }, throwable -> {
                     throwable.printStackTrace();

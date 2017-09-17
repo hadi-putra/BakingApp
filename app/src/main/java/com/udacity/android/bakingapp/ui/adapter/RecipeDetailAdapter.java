@@ -112,7 +112,7 @@ public class RecipeDetailAdapter extends RecyclerView.Adapter {
         public void bind(StepModel step) {
             mTVStepDescr.setText(step.getShortDescription());
             String validVideoUrl = step.getValidVideoUrl();
-            Log.e(getClass().getSimpleName(), getAdapterPosition()+" "+step.getShortDescription());
+
             if (!TextUtils.isEmpty(step.getThumbnailURL())
                     && !step.hasMp4Extension()){
                 GlideApp.with(itemView.getContext())

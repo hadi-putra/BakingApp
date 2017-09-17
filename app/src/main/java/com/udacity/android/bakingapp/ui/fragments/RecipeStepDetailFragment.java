@@ -127,8 +127,9 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
     @Override
     public void onResume() {
         super.onResume();
-        if (Util.SDK_INT <= 23 || mExoPlayer == null)
+        if (Util.SDK_INT <= 23 || mExoPlayer == null) {
             mPresenter.initPlayer();
+        }
     }
 
     @Override
@@ -140,16 +141,18 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
 
     @Override
     public void onStop() {
-        super.onStop();
+        backupState();
         if (Util.SDK_INT > 23)
             releaseExoPlayer();
+        super.onStop();
     }
 
     @Override
     public void onPause() {
-        super.onPause();
+        backupState();
         if (Util.SDK_INT <= 23)
             releaseExoPlayer();
+        super.onPause();
     }
 
     @Override
@@ -210,12 +213,17 @@ public class RecipeStepDetailFragment extends Fragment implements RecipeStepDeta
 
     private void releaseExoPlayer() {
         if (mExoPlayer != null){
-            isReadyPlayed = mExoPlayer.getPlayWhenReady();
-            currentPosition = mExoPlayer.getCurrentPosition();
-            currentWindowIndex = mExoPlayer.getCurrentWindowIndex();
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
+        }
+    }
+
+    private void backupState(){
+        if (mExoPlayer != null){
+            isReadyPlayed = mExoPlayer.getPlayWhenReady();
+            currentPosition = mExoPlayer.getCurrentPosition();
+            currentWindowIndex = mExoPlayer.getCurrentWindowIndex();
         }
     }
 }
